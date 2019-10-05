@@ -1,9 +1,9 @@
 import {
+    CallerFunction as SafeCallerFunction,
     Promise as SafePromise,
     PromiseBuilder as SafePromiseBuilder,
-    CallerFunction as SafeCallerFunction,
+    psBuilder as safeBuilder,
     wrap as wrapInSafePromise,
-    psBuilder as safeBuilder
 } from "./safePromise"
 
 export type Promise<ResultType, ErrorType> = {

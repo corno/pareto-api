@@ -1,9 +1,9 @@
 import {
-    Promise as UnsafePromise,
-    PromiseBuilder as UnsafePromiseBuilder,
     CallerFunction as UnsafeCallerFunction,
+    Promise as UnsafePromise,
+    promiseBuilder as unsafeBuilder,
+    PromiseBuilder as UnsafePromiseBuilder,
     wrap as wrapInUnsafePromise,
-    promiseBuilder as unsafeBuilder
 } from "./unsafePromise"
 
 export type Promise<ResultType> = {
