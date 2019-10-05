@@ -1,6 +1,6 @@
 {
-  "name": "aptitude",
-  "version": "1.0.0",
+  "name": "steroid-promise",
+  "version": "0.0.3",
   "description": "an alternative for the built-in Promise class",
   "main": "dist/index.js",
   "scripts": {
@@ -8,9 +8,15 @@
   },
   "keywords": [
     "Promise",
-    "functions"
+    "functions",
+    "functional"
   ],
   "author": "corno",
   "license": "ISC",
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "prepublish": "tsc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/corno/steroid-promise.git"
+  }
 }
