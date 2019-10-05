@@ -1,0 +1,16 @@
+{
+  "name": "aptitude",
+  "version": "1.0.0",
+  "description": "an alternative for the built-in Promise class",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Promise",
+    "functions"
+  ],
+  "author": "corno",
+  "license": "ISC",
+  "types": "dist/index.d.ts"
+}
