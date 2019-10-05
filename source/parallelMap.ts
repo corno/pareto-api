@@ -4,7 +4,7 @@ import {
     wrap as wrap
 } from "./unsafePromise"
 
-export function all<ResultType, ErrorType>(promises: Array<UnsafePromise<ResultType, ErrorType>>): UnsafePromise<ResultType[], ErrorType[]> {
+export function parallelMap<ResultType, ErrorType>(promises: Array<UnsafePromise<ResultType, ErrorType>>): UnsafePromise<ResultType[], ErrorType[]> {
     let isExecuted = false
     function execute(onErrors: (errors: ErrorType[]) => void, onSuccess: (results: ResultType[]) => void) {
         if (isExecuted === true) {
