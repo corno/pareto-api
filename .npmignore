@@ -1,3 +1,4 @@
 source
 tsconfig.json
 .vscode
+tslint.json

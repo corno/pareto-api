@@ -16,7 +16,6 @@ export type PromiseBuilder = {
     readonly result: <ResultType>(result: ResultType) => Promise<ResultType>
 }
 
-
 export type CallerFunction<ResultType> = (onResult: (result: ResultType) => void) => void
 
 export const psBuilder: PromiseBuilder = {

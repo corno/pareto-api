@@ -24,9 +24,7 @@ export type PromiseBuilder = {
     readonly error: <ResultType, ErrorType>(error: ErrorType) => Promise<ResultType, ErrorType>
 }
 
-
 export const promiseBuilder: PromiseBuilder = {
-
     success: <ResultType, ErrorType>(result: ResultType) => {
         const handler: CallerFunction<ResultType, ErrorType> = (_onError: (error: ErrorType) => void, onSuccess: (result: ResultType) => void) => {
             onSuccess(result)
