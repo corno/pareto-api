@@ -1,65 +1,46 @@
-import {
-    CallerFunction as UnsafeCallerFunction,
-    Promise as UnsafePromise,
-    promiseBuilder as unsafeBuilder,
-    PromiseBuilder as UnsafePromiseBuilder,
-    wrap as wrapInUnsafePromise,
-} from "./unsafePromise"
+import { UnsafeCallerFunction, UnsafePromise, wrapUnsafeFunction } from "./UnsafePromise"
+import { unsafePromiseBuilder, UnsafePromiseBuilder } from "./UnsafePromiseBuilder"
+import { SafePromiseBuilder, safePromiseBuilder } from "./SafePromiseBuilder"
 
-export type Promise<ResultType> = {
-    handle(onResult: (result: ResultType) => void): void
-    map<NewResultType>(onResult: (result: ResultType, pBuilder: PromiseBuilder) => Promise<NewResultType>): Promise<NewResultType>
-    try<NewResultType, ErrorType>(onResult: (result: ResultType, pBuilder: UnsafePromiseBuilder) => UnsafePromise<NewResultType, ErrorType>): UnsafePromise<NewResultType, ErrorType>
-}
+export type SafeCallerFunction<ResultType> = (onResult: (result: ResultType) => void) => void
 
-export type PromiseBuilder = {
-    readonly result: <ResultType>(result: ResultType) => Promise<ResultType>
-}
-
-export type CallerFunction<ResultType> = (onResult: (result: ResultType) => void) => void
-
-export const psBuilder: PromiseBuilder = {
-    result: <ResultType>(result: ResultType) => {
-        const handler: CallerFunction<ResultType> = (onResult: (result: ResultType) => void) => {
-            onResult(result)
-        }
-        return wrap<ResultType>(handler)
-    },
-}
-
-export function wrap<ResultType>(callerFunction: CallerFunction<ResultType>): Promise<ResultType> {
-    let isCalled = false
-
-    const p: Promise<ResultType> = {
-        handle: onSuccess => {
-            if (isCalled) { throw new Error("already called") }
-            isCalled = true
-            callerFunction(onSuccess)
-        },
-        map: <NewResultType>(onResult: (result: ResultType, pBuilder: PromiseBuilder) => Promise<NewResultType>) => {
-            if (isCalled) { throw new Error("already called") }
-            isCalled = true
-            const newFunc: CallerFunction<NewResultType> = newOnResult => {
-                callerFunction(
-                    res => {
-                        onResult(res, psBuilder).handle(newOnResult)
-                    }
-                )
-            }
-            return wrap(newFunc)
-        },
-        try: <NewResultType, ErrorType>(onResult: (result: ResultType, pBuilder: UnsafePromiseBuilder) => UnsafePromise<NewResultType, ErrorType>) => {
-            if (isCalled) { throw new Error("already called") }
-            isCalled = true
-            const newFunc: UnsafeCallerFunction<NewResultType, ErrorType> = (onError, onSuccess) => {
-                callerFunction(
-                    res => {
-                        onResult(res, unsafeBuilder).handle(onError, onSuccess)
-                    }
-                )
-            }
-            return wrapInUnsafePromise(newFunc)
-        },
+export class SafePromise<ResultType> {
+    private isCalled = false
+    private readonly callerFunction: SafeCallerFunction<ResultType>
+    constructor(callerFunction: SafeCallerFunction<ResultType>) {
+        this.callerFunction = callerFunction
     }
-    return p
+    public handle(onResult: (result: ResultType) => void) {
+        if (this.isCalled) { throw new Error("already called") }
+        this.isCalled = true
+        this.callerFunction(onResult)
+    }
+    public map<NewResultType>(onResult: (result: ResultType, pBuilder: SafePromiseBuilder) => SafePromise<NewResultType>): SafePromise<NewResultType> {
+        if (this.isCalled) { throw new Error("already called") }
+        this.isCalled = true
+        const newFunc: SafeCallerFunction<NewResultType> = newOnResult => {
+            this.callerFunction(
+                res => {
+                    onResult(res, safePromiseBuilder).handle(newOnResult)
+                }
+            )
+        }
+        return wrapSafeFunction(newFunc)
+    }
+    public try<NewResultType, ErrorType>(onResult: (result: ResultType, pBuilder: UnsafePromiseBuilder) => UnsafePromise<NewResultType, ErrorType>): UnsafePromise<NewResultType, ErrorType> {
+        if (this.isCalled) { throw new Error("already called") }
+        this.isCalled = true
+        const newFunc: UnsafeCallerFunction<NewResultType, ErrorType> = (onError, onSuccess) => {
+            this.callerFunction(
+                res => {
+                    onResult(res, unsafePromiseBuilder).handle(onError, onSuccess)
+                }
+            )
+        }
+        return wrapUnsafeFunction(newFunc)
+    }
+}
+
+export function wrapSafeFunction<ResultType>(callerFunction: SafeCallerFunction<ResultType>): SafePromise<ResultType> {
+    return new SafePromise(callerFunction)
 }
