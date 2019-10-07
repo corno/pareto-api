@@ -1,6 +1,6 @@
 {
-  "name": "steroid-promise",
-  "version": "0.0.3",
+  "name": "steroid-promise-core",
+  "version": "0.0.4",
   "description": "an alternative for the built-in Promise class",
   "main": "dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "keywords": [
     "Promise",
-    "functions",
+    "error handling",
     "functional"
   ],
   "author": "corno",
@@ -17,6 +17,9 @@
   "prepublish": "tsc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/corno/steroid-promise.git"
-  }
+    "url": "https://github.com/corno/steroid-promise-core.git"
+  },
+  "files": [
+    "dist/*"
+  ]
 }
