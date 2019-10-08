@@ -1,6 +1,6 @@
 {
   "name": "steroid-promise-core",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "an alternative for the built-in Promise class",
   "main": "dist/index.js",
   "scripts": {
