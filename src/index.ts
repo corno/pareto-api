@@ -1,6 +1,4 @@
-export * from "./mapSafePromises"
 export * from "./SafePromise"
 export * from "./SafePromiseBuilder"
-export * from "./mapUnsafePromises"
 export * from "./UnsafePromise"
 export * from "./UnsafePromiseBuilder"
