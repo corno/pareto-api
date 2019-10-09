@@ -15,6 +15,6 @@ export interface IUnsafePromise<ResultType, ErrorType> {
         onError: (error: ErrorType) => SafeWrappedOrUnwrapped<NewResultType>,
         onSuccess: (result: ResultType) => SafeWrappedOrUnwrapped<NewResultType>
     ): ISafePromise<NewResultType>
-    map<NewResultType>(onSuccess: (result: ResultType) => IUnsafePromise<NewResultType, ErrorType>): IUnsafePromise<NewResultType, ErrorType>
+    map<NewResultType>(onSuccess: (result: ResultType) => UnsafeWrappedOrUnwrapped<NewResultType, ErrorType>): IUnsafePromise<NewResultType, ErrorType>
     handle(onError: (error: ErrorType) => void, onSuccess: (result: ResultType) => void): void
 }

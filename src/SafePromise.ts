@@ -1,6 +1,6 @@
 import { IUnsafePromise, UnsafeWrappedOrUnwrapped } from "./UnsafePromise"
 
-export type SafeWrappedOrUnwrapped<ResultType> = [ ResultType ] | ISafePromise<ResultType>
+export type SafeWrappedOrUnwrapped<ResultType> = [ "result", ResultType ] | ISafePromise<ResultType>
 
 
 export interface ISafePromise<ResultType> {
