@@ -9,11 +9,11 @@ export interface IUnsafeOpenedResource<ResourceType, CloseError> {
 }
 
 export interface ISafeOpenableResource<OpenedResource> {
-    open(onOpened: (openResource: OpenedResource) => void): void
+    open(onOpened: (openedResource: OpenedResource) => void): void
 }
 
 export interface IUnsafeOpenableResource<OpenedResource, OpenError> {
-    open(onError: (openError: OpenError) => void, onOpened: (result: OpenedResource) => void): void
+    open(onError: (openError: OpenError) => void, onOpened: (openedResource: OpenedResource) => void): void
 }
 
 
