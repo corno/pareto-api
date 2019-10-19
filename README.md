@@ -1,2 +1,2 @@
-# steroid-promise-api
+# pareto-api
 promise classes and helper functions

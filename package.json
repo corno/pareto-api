@@ -1,5 +1,5 @@
 {
-  "name": "steroid-promise-api",
+  "name": "pareto-api",
   "version": "0.5.8",
   "description": "an alternative API for the built-in Promise class",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
   "prepublish": "tsc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/corno/steroid-promise-api.git"
+    "url": "https://github.com/corno/pareto-api.git"
   },
   "files": [
     "dist/*"
