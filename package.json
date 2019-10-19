@@ -1,6 +1,6 @@
 {
   "name": "steroid-promise-api",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "an alternative API for the built-in Promise class",
   "main": "dist/index.js",
   "scripts": {
