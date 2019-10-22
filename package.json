@@ -1,15 +1,17 @@
 {
   "name": "pareto-api",
   "version": "0.6.0",
-  "description": "an alternative API for the built-in Promise class",
+  "description": "the API interface definitions for the pareto package",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "u2l": "ncu -u --packageFile package.json && npm install",
+    "pubMin": "rm -rf ./dist && tsc && npm version minor && npm publish && git push"
   },
   "keywords": [
-    "Promise",
-    "error handling",
-    "functional"
+    "80-20",
+    "functional",
+    "system development"
   ],
   "author": "corno",
   "license": "ISC",
