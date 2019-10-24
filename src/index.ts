@@ -1,4 +1,5 @@
 export * from "./Dictionary"
+export * from "./Lookup"
 export * from "./Promise"
 export * from "./Resource"
 export * from "./Stream"
