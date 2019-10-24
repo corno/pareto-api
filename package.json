@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "u2l": "ncu -u --packageFile package.json && npm install",
-    "pubMin": "rm -rf ./dist && tsc && npm version minor && npm publish && git push"
+    "pubMin": "rm -rf ./dist && tsc && npm run lint && npm version minor && npm publish && git push",
+    "lint": "tslint --project tsconfig.json ./src/*"
   },
   "keywords": [
     "80-20",
@@ -23,5 +24,6 @@
   },
   "files": [
     "dist/*"
-  ]
+  ],
+  "dependencies": {}
 }
