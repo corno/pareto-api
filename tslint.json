@@ -2,7 +2,6 @@
     "extends": "tslint:recommended",
     "rulesDirectory": [],
     "rules": {
-        "my-tSLint": true,
         "prefer-readonly": true,
         "semicolon": false,
         "max-line-length": {
@@ -17,10 +16,6 @@
         "object-literal-shorthand": [
             true,
             "never"
-        ],
-        "import-sources-order": [
-            true,
-            "any"
         ],
         "arrow-parens": [
             true,
