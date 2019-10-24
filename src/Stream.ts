@@ -14,7 +14,6 @@ export type StreamLimiter = null | {
  */
 export interface IStream<Data> {
     /**
-     * 
      * @param limiter the limiter is a hint to the stream provider to limit the amount of times onData is called.
      * @param onData callback for a data element, the second argument (abort) requests the provider to abort the stream. This is not quaranteed
      * @param onEnd callback that will be called when the stream is finished. aborted will be set to true if not the full dataset is received. This will always be caused by the caller
@@ -22,3 +21,16 @@ export interface IStream<Data> {
      */
     process(limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void): void;
 }
+
+/**
+ * a key/value pair where the key is a string and the value is generic
+ */
+export type KeyValuePair<Type> = {
+    key: string,
+    value: Type
+}
+
+/**
+ * a stream for key value pairs
+ */
+export interface IKeyValueStream<Data> extends IStream<KeyValuePair<Data>> {}
