@@ -1,3 +1,4 @@
+import { ISafeLookup, IUnsafeLookup, SafeEntryDoesNotExistError, UnsafeEntryDoesNotExistError } from "./Lookup"
 import { ISafePromise, IUnsafePromise } from "./Promise"
 import { IStream } from "./Stream"
 
@@ -14,11 +15,6 @@ export type UnsafeEntryAlreadyExistsError<ErrorType> =
     |
     ["custom", ErrorType]
 
-
-export type UnsafeEntryDoesNotExistError<ErrorType> =
-    ["entry does not exist"]
-    |
-    ["custom", ErrorType]
 
 export type UnsafeTwoWayError<ErrorType> =
     ["twoway", TwoWayError]
@@ -44,10 +40,8 @@ export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
  * an interface that gives access to a Dictionary with methods without guaranteed success. If it fails, a custom error is returned.
  * the provider must implement all of the functions
  */
-export interface IUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> {
+export interface IUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> extends IUnsafeLookup<OpenData, CustomErrorType> {
     readonly getKeys: () => IUnsafePromise<IStream<string>, CustomErrorType>
-
-    readonly getEntry: (dbName: string) => IUnsafePromise<OpenData, UnsafeEntryDoesNotExistError<CustomErrorType>>
 
     readonly createEntry: (dbName: string, data: CreateData) => IUnsafePromise<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>
     readonly deleteEntry: (dbName: string) => IUnsafePromise<null, UnsafeEntryDoesNotExistError<CustomErrorType>>
@@ -58,8 +52,6 @@ export interface IUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> 
 //Safe
 
 export type SafeEntryAlreadyExistsError = null
-
-export type SafeEntryDoesNotExistError = null
 
 export type SafeTwoWayError = TwoWayError
 
@@ -82,10 +74,8 @@ export interface ISafeLooseDictionary<CreateData, OpenData> {
  * an interface that gives access to a Dictionary with guaranteed success
  * the provider must implement all of the functions
  */
-export interface ISafeStrictDictionary<CreateData, OpenData> {
+export interface ISafeStrictDictionary<CreateData, OpenData> extends ISafeLookup<OpenData> {
     readonly getKeys: () => ISafePromise<IStream<string>>
-
-    readonly getEntry: (dbName: string) => IUnsafePromise<OpenData, SafeEntryDoesNotExistError>
 
     readonly createEntry: (dbName: string, data: CreateData) => IUnsafePromise<null, SafeEntryAlreadyExistsError>
     readonly deleteEntry: (dbName: string) => IUnsafePromise<null, SafeEntryDoesNotExistError>

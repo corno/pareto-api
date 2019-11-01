@@ -1,22 +1,20 @@
 import { IUnsafePromise } from "./Promise";
 
-export type ISafeEntryDoesNotExistError = null
+export type SafeEntryDoesNotExistError = null
 
 export interface ISafeLookup<Type> {
     getEntry(
         entryName: string,
-    ): IUnsafePromise<Type, ISafeEntryDoesNotExistError>
+    ): IUnsafePromise<Type, SafeEntryDoesNotExistError>
 }
 
-export interface IUnsafeEntryDoesNotExistError<ErrorType> {
-    handle(
-        entryDoesNotExist: () => void,
-        customError: (error: ErrorType) => void
-    ): void
-}
+export type UnsafeEntryDoesNotExistError<ErrorType> =
+    ["entry does not exist"]
+    |
+    ["custom", ErrorType]
 
 export interface IUnsafeLookup<Type, ErrorType> {
     getEntry(
         entryName: string,
-    ): IUnsafePromise<Type, IUnsafeEntryDoesNotExistError<ErrorType>>
+    ): IUnsafePromise<Type, UnsafeEntryDoesNotExistError<ErrorType>>
 }
