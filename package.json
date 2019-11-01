@@ -8,6 +8,7 @@
     "u2l": "ncu -u --packageFile package.json && npm install",
     "pubMin": "rd /s /q .\\dist && tsc && npm run lint && npm version minor && git push && npm publish",
     "pubPatch": "rd /s /q .\\dist && tsc && npm run lint && npm version patch && git push && npm publish",
+    "build": "tsc",
     "lint": "tslint --project tsconfig.json ./src/*"
   },
   "keywords": [
