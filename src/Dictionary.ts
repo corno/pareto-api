@@ -25,7 +25,7 @@ export type UnsafeTwoWayError<ErrorType> =
  * an interface that gives access to a Dictionary with methods without guaranteed success. If it fails, a custom error is returned.
  * The provider can choose to implement only a subset of the functions, therefor all methods have a 'null' alternative
  */
-export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
+export interface IInUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
     readonly getKeys: null | (() => IUnsafePromise<IStream<string>, CustomErrorType>)
 
     readonly getEntry: null | ((dbName: string) => IUnsafePromise<OpenData, UnsafeEntryDoesNotExistError<CustomErrorType>>)
@@ -40,7 +40,7 @@ export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
  * an interface that gives access to a Dictionary with methods without guaranteed success. If it fails, a custom error is returned.
  * the provider must implement all of the functions
  */
-export interface IUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> extends IUnsafeLookup<OpenData, CustomErrorType> {
+export interface IInUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> extends IUnsafeLookup<OpenData, CustomErrorType> {
     readonly getKeys: () => IUnsafePromise<IStream<string>, CustomErrorType>
 
     readonly createEntry: (dbName: string, data: CreateData) => IUnsafePromise<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>
@@ -59,7 +59,7 @@ export type SafeTwoWayError = TwoWayError
  * an interface that gives access to a Dictionary with guaranteed success
  * the provider can choose to implement only a subset of the functions, therefor all functions have a 'null' alternative
  */
-export interface ISafeLooseDictionary<CreateData, OpenData> {
+export interface IInSafeLooseDictionary<CreateData, OpenData> {
     readonly getKeys: null | (() => ISafePromise<IStream<string>>)
 
     readonly getEntry: null | ((dbName: string) => IUnsafePromise<OpenData, SafeEntryDoesNotExistError>)
@@ -74,7 +74,7 @@ export interface ISafeLooseDictionary<CreateData, OpenData> {
  * an interface that gives access to a Dictionary with guaranteed success
  * the provider must implement all of the functions
  */
-export interface ISafeStrictDictionary<CreateData, OpenData> extends ISafeLookup<OpenData> {
+export interface IInSafeStrictDictionary<CreateData, OpenData> extends ISafeLookup<OpenData> {
     readonly getKeys: () => ISafePromise<IStream<string>>
 
     readonly createEntry: (dbName: string, data: CreateData) => IUnsafePromise<null, SafeEntryAlreadyExistsError>
