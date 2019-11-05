@@ -9,6 +9,8 @@ export type StreamLimiter = null | {
     abortEarly: boolean
 }
 
+export type StreamProcessor<Data> = (limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void) => void
+
 /**
  * a minimalistic interface that supports streaming
  */
@@ -19,7 +21,7 @@ export interface IInStream<Data> {
      * @param onEnd callback that will be called when the stream is finished. aborted will be set to true if not the full dataset is received. This will always be caused by the caller
      * either by setting the limiter or by calling the abort function on onData
      */
-    process(limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void): void;
+    process(limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void): void
 }
 
 /**
@@ -29,6 +31,10 @@ export type KeyValuePair<Type> = {
     key: string,
     value: Type
 }
+
+
+export type KeyValueStreamProcessor<Data> = StreamProcessor<KeyValuePair<Data>>
+
 
 /**
  * a stream for key value pairs
