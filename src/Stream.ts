@@ -21,7 +21,7 @@ export interface IInStream<Data> {
      * @param onEnd callback that will be called when the stream is finished. aborted will be set to true if not the full dataset is received. This will always be caused by the caller
      * either by setting the limiter or by calling the abort function on onData
      */
-    process(limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void): void
+    processStream(limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void): void
 }
 
 /**

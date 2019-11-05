@@ -3,7 +3,7 @@
  */
 export interface IInSafeOpenedResource<ResourceType> {
     readonly resource: ResourceType
-    close(): void
+    closeSafeOpenedResource(): void
 }
 
 /**
@@ -14,7 +14,7 @@ export interface IInUnsafeOpenedResource<ResourceType, CloseError> {
     /**
      * @param onError onError will be called if an error occurred when the resource was closed
      */
-    close(onError: (error: CloseError) => void): void
+    closeUnsafeOpenedResource(onError: (error: CloseError) => void): void
 }
 
 /**
@@ -24,7 +24,7 @@ export interface IInSafeOpenableResource<OpenedResource> {
     /**
      * @param onOpened this callback will be called when the resource was opened
      */
-    open(onOpened: (openedResource: OpenedResource) => void): void
+    openSafeOpenableResource(onOpened: (openedResource: OpenedResource) => void): void
 }
 
 /**
@@ -35,7 +35,7 @@ export interface IInUnsafeOpenableResource<OpenedResource, OpenError> {
      * @param onError this callback will be called if an error occurred when the resource was opened
      * @param onOpened this callback will be called when the resource was successfully opened
      */
-    open(onError: (openError: OpenError) => void, onOpened: (openedResource: OpenedResource) => void): void
+    openUnsafeOpenableResource(onError: (openError: OpenError) => void, onOpened: (openedResource: OpenedResource) => void): void
 }
 
 /**
