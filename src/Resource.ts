@@ -37,25 +37,3 @@ export interface IInUnsafeOpenableResource<OpenedResource, OpenError> {
      */
     openUnsafeOpenableResource(onError: (openError: OpenError) => void, onOpened: (openedResource: OpenedResource) => void): void
 }
-
-/**
- * a resource that that does not throw errors either on opening or closing
- */
-export interface IInSafeResource<ResourceType> extends IInSafeOpenableResource<IInSafeOpenedResource<ResourceType>> {}
-
-/**
- * a resource that can throw errors on both opening and closing
- * This is a tricky resource because closing errors will occur after the resource has been used and therefor normally will not influence the execution path
- * The question is often: what should be done with the closing error
- */
-export interface IInUnsafeResource<ResourceType, OpenError, CloseError> extends IInUnsafeOpenableResource<IInUnsafeOpenedResource<ResourceType, CloseError>, OpenError> {}
-
-/**
- * a resource that can throw errors on opening but not on closing
- */
-export interface IInUnsafeOnOpenResource<ResourceType, OpenError> extends IInUnsafeOpenableResource<IInSafeOpenedResource<ResourceType>, OpenError> {}
-
-/**
- * a resource that can throw errors on closing but not on opening. This case is quite exceptional but added for completeness
- */
-export interface IInUnsafeOnCloseResource<ResourceType, CloseError> extends IInSafeOpenableResource<IInUnsafeOpenedResource<ResourceType, CloseError>> {}
