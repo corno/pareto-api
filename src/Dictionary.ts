@@ -1,10 +1,20 @@
-import { IInSafeLookup, IInUnsafeLookup, SafeEntryDoesNotExistError, UnsafeEntryDoesNotExistError } from "./Lookup"
-import { IInSafePromise, IInUnsafePromise } from "./Promise"
-import { IInStream } from "./Stream"
+import {
+    IInSafeLookup,
+    IInUnsafeLookup,
+    SafeEntryDoesNotExistError,
+    UnsafeEntryDoesNotExistError,
+} from "./Lookup"
+import {
+    IInSafePromise,
+    IInUnsafePromise,
+} from "./Promise"
+import {
+    IInStream,
+} from "./Stream"
 
 
 export type TwoWayError = {
-    entryDoesNotExist: boolean,
+    entryDoesNotExist: boolean
     entryAlreadyExists: boolean | null
 }
 

@@ -1,4 +1,7 @@
-// tslint:disable: interface-name no-empty-interface
+/* eslint
+    "@typescript-eslint/no-empty-interface": off
+*/
+
 interface Array<T> {}
 interface Boolean {}
 interface CallableFunction {}

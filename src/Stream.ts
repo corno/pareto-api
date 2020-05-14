@@ -1,8 +1,12 @@
+/* eslint
+    "@typescript-eslint/no-empty-interface": off
+*/
+
 export type StreamLimiter = null | {
     /**
      * maximum amount of times onData is called
      */
-    maximum: number,
+    maximum: number
     /**
      * if the provider knows that the amount of records exceeds 'maximum', it can choose to send even less records, even 0.
      */
@@ -28,7 +32,7 @@ export interface IInStream<Data> {
  * a key/value pair where the key is a string and the value is generic
  */
 export type KeyValuePair<Type> = {
-    key: string,
+    key: string
     value: Type
 }
 
