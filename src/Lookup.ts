@@ -1,11 +1,11 @@
-import { IInUnsafePromise } from "./Promise";
+import { IUnsafePromise } from "./Promise";
 
 export type SafeEntryDoesNotExistError = null
 
-export interface IInSafeLookup<Type> {
+export interface ISafeLookup<Type> {
     getEntry(
         entryName: string,
-    ): IInUnsafePromise<Type, SafeEntryDoesNotExistError>
+    ): IUnsafePromise<Type, SafeEntryDoesNotExistError>
 }
 
 export type UnsafeEntryDoesNotExistError<ErrorType> =
@@ -13,8 +13,8 @@ export type UnsafeEntryDoesNotExistError<ErrorType> =
     |
     ["custom", ErrorType]
 
-export interface IInUnsafeLookup<Type, ErrorType> {
+export interface IUnsafeLookup<Type, ErrorType> {
     getEntry(
         entryName: string,
-    ): IInUnsafePromise<Type, UnsafeEntryDoesNotExistError<ErrorType>>
+    ): IUnsafePromise<Type, UnsafeEntryDoesNotExistError<ErrorType>>
 }

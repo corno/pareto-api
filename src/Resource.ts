@@ -1,7 +1,7 @@
 /**
  * an opened resource that will not have an error on closing
  */
-export interface IInSafeOpenedResource<ResourceType> {
+export interface ISafeOpenedResource<ResourceType> {
     readonly resource: ResourceType
     closeSafeOpenedResource(): void
 }
@@ -9,7 +9,7 @@ export interface IInSafeOpenedResource<ResourceType> {
 /**
  * an opened resource that can have an error on closing
  */
-export interface IInUnsafeOpenedResource<ResourceType, CloseError> {
+export interface IUnsafeOpenedResource<ResourceType, CloseError> {
     readonly resource: ResourceType
     /**
      * @param onError onError will be called if an error occurred when the resource was closed
@@ -20,7 +20,7 @@ export interface IInUnsafeOpenedResource<ResourceType, CloseError> {
 /**
  * a resource that will not have an error during opening
  */
-export interface IInSafeOpenableResource<OpenedResource> {
+export interface ISafeOpenableResource<OpenedResource> {
     /**
      * @param onOpened this callback will be called when the resource was opened
      */
@@ -30,7 +30,7 @@ export interface IInSafeOpenableResource<OpenedResource> {
 /**
  * a resource that can have an error on opening
  */
-export interface IInUnsafeOpenableResource<OpenedResource, OpenError> {
+export interface IUnsafeOpenableResource<OpenedResource, OpenError> {
     /**
      * @param onError this callback will be called if an error occurred when the resource was opened
      * @param onOpened this callback will be called when the resource was successfully opened
