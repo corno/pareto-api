@@ -20,7 +20,7 @@ export type StreamLimiter = null | {
  */
 export type OnData<Data> = (data: Data) => boolean | ISafePromise<boolean>
 
-export type StreamProcessor<Data> = (limiter: StreamLimiter, onData: OnData<Data>, onEnd: (aborted: boolean) => void) => void
+export type StreamProcessor<Data, EndData> = (limiter: StreamLimiter, onData: OnData<Data>, onEnd: (aborted: boolean, endData: EndData) => void) => void
 
 /**
  * a minimalistic interface that supports streaming
@@ -50,7 +50,7 @@ export type KeyValuePair<Type> = {
 }
 
 
-export type KeyValueStreamProcessor<Data> = StreamProcessor<KeyValuePair<Data>>
+export type KeyValueStreamProcessor<Data, EndData> = StreamProcessor<KeyValuePair<Data>, EndData>
 
 
 /**
