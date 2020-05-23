@@ -15,7 +15,10 @@ export type StreamLimiter = null | {
     abortEarly: boolean
 }
 
-export type OnData<Data> = (data: Data, abort: () => void) => null | ISafePromise<null>
+/**
+ * the return type indicates if the stream should be aborted. If a promise is returned, the stream will suppress further onData calls until the promise is resolved
+ */
+export type OnData<Data> = (data: Data) => boolean | ISafePromise<boolean>
 
 export type StreamProcessor<Data> = (limiter: StreamLimiter, onData: OnData<Data>, onEnd: (aborted: boolean) => void) => void
 
