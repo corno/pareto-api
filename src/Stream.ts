@@ -25,7 +25,7 @@ export type StreamProcessor<Data, EndData> = (limiter: StreamLimiter, onData: On
 /**
  * a minimalistic interface that supports streaming
  */
-export interface IStream<Data> {
+export interface IStream<Data, EndData> {
     /**
      * @param limiter the limiter is a hint to the stream provider to limit the amount of times onData is called.
      * @param onData callback for a data element
@@ -37,7 +37,7 @@ export interface IStream<Data> {
     processStream(
         limiter: StreamLimiter,
         onData: OnData<Data>,
-        onEnd: (aborted: boolean) => void
+        onEnd: (aborted: boolean, data: EndData) => void
     ): void
 }
 
@@ -56,4 +56,4 @@ export type KeyValueStreamProcessor<Data, EndData> = StreamProcessor<KeyValuePai
 /**
  * a stream for key value pairs
  */
-export interface IKeyValueStream<Data> extends IStream<KeyValuePair<Data>> { }
+export interface IKeyValueStream<Data, EndData> extends IStream<KeyValuePair<Data>, EndData> { }

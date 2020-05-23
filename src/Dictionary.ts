@@ -36,7 +36,7 @@ export type UnsafeTwoWayError<ErrorType> =
  * The provider can choose to implement only a subset of the functions, therefor all methods have a 'null' alternative
  */
 export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
-    readonly getKeys: null | (() => IUnsafePromise<IStream<string>, CustomErrorType>)
+    readonly getKeys: null | (() => IUnsafePromise<IStream<string, null>, CustomErrorType>)
 
     readonly getEntry: null | ((dbName: string) => IUnsafePromise<OpenData, UnsafeEntryDoesNotExistError<CustomErrorType>>)
 
@@ -51,7 +51,7 @@ export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
  * the provider must implement all of the functions
  */
 export interface IUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> extends IUnsafeLookup<OpenData, CustomErrorType> {
-    readonly getKeys: () => IUnsafePromise<IStream<string>, CustomErrorType>
+    readonly getKeys: () => IUnsafePromise<IStream<string, null>, CustomErrorType>
 
     readonly createEntry: (dbName: string, data: CreateData) => IUnsafePromise<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>
     readonly deleteEntry: (dbName: string) => IUnsafePromise<null, UnsafeEntryDoesNotExistError<CustomErrorType>>
@@ -70,7 +70,7 @@ export type SafeTwoWayError = TwoWayError
  * the provider can choose to implement only a subset of the functions, therefor all functions have a 'null' alternative
  */
 export interface ISafeLooseDictionary<CreateData, OpenData> {
-    readonly getKeys: null | (() => ISafePromise<IStream<string>>)
+    readonly getKeys: null | (() => ISafePromise<IStream<string, null>>)
 
     readonly getEntry: null | ((dbName: string) => IUnsafePromise<OpenData, SafeEntryDoesNotExistError>)
 
@@ -85,7 +85,7 @@ export interface ISafeLooseDictionary<CreateData, OpenData> {
  * the provider must implement all of the functions
  */
 export interface ISafeStrictDictionary<CreateData, OpenData> extends ISafeLookup<OpenData> {
-    readonly getKeys: () => ISafePromise<IStream<string>>
+    readonly getKeys: () => ISafePromise<IStream<string, null>>
 
     readonly createEntry: (dbName: string, data: CreateData) => IUnsafePromise<null, SafeEntryAlreadyExistsError>
     readonly deleteEntry: (dbName: string) => IUnsafePromise<null, SafeEntryDoesNotExistError>
