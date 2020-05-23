@@ -2,6 +2,8 @@
     "@typescript-eslint/no-empty-interface": off
 */
 
+import { ISafePromise } from "./Promise"
+
 export type StreamLimiter = null | {
     /**
      * maximum amount of times onData is called
@@ -13,7 +15,9 @@ export type StreamLimiter = null | {
     abortEarly: boolean
 }
 
-export type StreamProcessor<Data> = (limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void) => void
+export type OnData<Data> = (data: Data, abort: () => void) => null | ISafePromise<null>
+
+export type StreamProcessor<Data> = (limiter: StreamLimiter, onData: OnData<Data>, onEnd: (aborted: boolean) => void) => void
 
 /**
  * a minimalistic interface that supports streaming
@@ -21,11 +25,17 @@ export type StreamProcessor<Data> = (limiter: StreamLimiter, onData: (data: Data
 export interface IStream<Data> {
     /**
      * @param limiter the limiter is a hint to the stream provider to limit the amount of times onData is called.
-     * @param onData callback for a data element, the second argument (abort) requests the provider to abort the stream. This is not quaranteed
+     * @param onData callback for a data element
+     * the second argument (abort) requests the provider to abort the stream. It is not guaranteed that the provider do so.
+     * If a promise is returned, the stream will suppress further onData calls until the promise is resolved
      * @param onEnd callback that will be called when the stream is finished. aborted will be set to true if not the full dataset is received. This will always be caused by the caller
      * either by setting the limiter or by calling the abort function on onData
      */
-    processStream(limiter: StreamLimiter, onData: (data: Data, abort: () => void) => void, onEnd: (aborted: boolean) => void): void
+    processStream(
+        limiter: StreamLimiter,
+        onData: OnData<Data>,
+        onEnd: (aborted: boolean) => void
+    ): void
 }
 
 /**
