@@ -18,14 +18,14 @@ export type StreamLimiter = null | {
 /**
  * the return type indicates if the stream should be aborted. If a promise is returned, the stream will suppress further onData calls until the promise is resolved
  */
-export type OnData<Data> = (data: Data) => DataOrPromise<boolean>
+export type OnData<Data, ReturnType> = (data: Data) => DataOrPromise<ReturnType>
 
-export type StreamProcessor<Data, EndData> = (limiter: StreamLimiter, onData: OnData<Data>, onEnd: (aborted: boolean, endData: EndData) => void) => void
+export type StreamProcessor<Data, ReturnType, EndData> = (limiter: StreamLimiter, onData: OnData<Data, ReturnType>, onEnd: (aborted: boolean, endData: EndData) => void) => void
 
 /**
  * a minimalistic interface that supports streaming
  */
-export interface IStream<Data, EndData> {
+export interface IStream<Data, ReturnType, EndData> {
     /**
      * @param limiter the limiter is a hint to the stream provider to limit the amount of times onData is called.
      * @param onData callback for a data element
@@ -36,7 +36,7 @@ export interface IStream<Data, EndData> {
      */
     processStream(
         limiter: StreamLimiter,
-        onData: OnData<Data>,
+        onData: OnData<Data, ReturnType>,
         onEnd: (aborted: boolean, data: EndData) => void
     ): void
 }
@@ -50,10 +50,10 @@ export type KeyValuePair<Type> = {
 }
 
 
-export type KeyValueStreamProcessor<Data, EndData> = StreamProcessor<KeyValuePair<Data>, EndData>
+export type KeyValueStreamProcessor<Data, ReturnType, EndData> = StreamProcessor<KeyValuePair<Data>, ReturnType, EndData>
 
 
 /**
  * a stream for key value pairs
  */
-export interface IKeyValueStream<Data, EndData> extends IStream<KeyValuePair<Data>, EndData> { }
+export interface IKeyValueStream<Data, ReturnType, EndData> extends IStream<KeyValuePair<Data>, ReturnType, EndData> { }
