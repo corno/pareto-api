@@ -2,7 +2,7 @@
     "@typescript-eslint/no-empty-interface": off
 */
 
-import { ISafePromise } from "./Promise"
+import { DataOrPromise } from "./Promise"
 
 export type StreamLimiter = null | {
     /**
@@ -18,7 +18,7 @@ export type StreamLimiter = null | {
 /**
  * the return type indicates if the stream should be aborted. If a promise is returned, the stream will suppress further onData calls until the promise is resolved
  */
-export type OnData<Data> = (data: Data) => boolean | ISafePromise<boolean>
+export type OnData<Data> = (data: Data) => DataOrPromise<boolean>
 
 export type StreamProcessor<Data, EndData> = (limiter: StreamLimiter, onData: OnData<Data>, onEnd: (aborted: boolean, endData: EndData) => void) => void
 

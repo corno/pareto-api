@@ -15,3 +15,10 @@ export interface IUnsafePromise<ResultType, ErrorType> {
      */
     handleUnsafePromise(onError: (error: ErrorType) => void, onSuccess: (result: ResultType) => void): void
 }
+
+export type DataOrPromise<Type> = [Type] | ISafePromise<Type>
+
+export type UnsafeDataOrPromise<Type, ErrorType> =
+    | [true, Type]
+    | [false, ErrorType]
+    | ISafePromise<Type>
