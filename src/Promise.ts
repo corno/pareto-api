@@ -21,4 +21,4 @@ export type DataOrPromise<Type> = [Type] | ISafePromise<Type>
 export type UnsafeDataOrPromise<Type, ErrorType> =
     | [true, Type]
     | [false, ErrorType]
-    | ISafePromise<Type>
+    | IUnsafePromise<Type, ErrorType>
