@@ -36,10 +36,11 @@ export type UnsafeTwoWayError<ErrorType> =
  * The provider can choose to implement only a subset of the functions, therefor all methods have a 'null' alternative
  */
 export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
-    readonly getKeys: null | (() => UnsafeDataOrPromise<IStream<
+    readonly getKeys: null | (<ReturnType>() => UnsafeDataOrPromise<IStream<
         string, //the key
         boolean, //abort flag
-        null
+        null,
+        ReturnType
     >, CustomErrorType>)
 
     readonly getEntry: null | ((dbName: string) => UnsafeDataOrPromise<OpenData, UnsafeEntryDoesNotExistError<CustomErrorType>>)
@@ -55,10 +56,11 @@ export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
  * the provider must implement all of the functions
  */
 export interface IUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> extends IUnsafeLookup<OpenData, CustomErrorType> {
-    readonly getKeys: <EndDataType> (endData: EndDataType) => UnsafeDataOrPromise<IStream<
+    readonly getKeys: <ReturnType> () => UnsafeDataOrPromise<IStream<
         string, //the key
         boolean, //abort flag
-        null
+        null,
+        ReturnType
     >, CustomErrorType>
 
     readonly createEntry: (dbName: string, data: CreateData) => UnsafeDataOrPromise<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>
@@ -78,10 +80,11 @@ export type SafeTwoWayError = TwoWayError
  * the provider can choose to implement only a subset of the functions, therefor all functions have a 'null' alternative
  */
 export interface ISafeLooseDictionary<CreateData, OpenData> {
-    readonly getKeys: null | (() => DataOrPromise<IStream<
+    readonly getKeys: null | (<ReturnType>() => DataOrPromise<IStream<
         string, //the key
         boolean, //abort signal return value
-        null // no end data
+        null, // no end data
+        ReturnType
     >>)
 
     readonly getEntry: null | ((dbName: string) => UnsafeDataOrPromise<OpenData, SafeEntryDoesNotExistError>)
@@ -97,10 +100,11 @@ export interface ISafeLooseDictionary<CreateData, OpenData> {
  * the provider must implement all of the functions
  */
 export interface ISafeStrictDictionary<CreateData, OpenData> extends ISafeLookup<OpenData> {
-    readonly getKeys: () => DataOrPromise<IStream<
+    readonly getKeys: <ReturnType>() => DataOrPromise<IStream<
         string, //the key
         boolean, //abort signal return value
-        null
+        null,
+        ReturnType
     >>
 
     readonly createEntry: (dbName: string, data: CreateData) => UnsafeDataOrPromise<null, SafeEntryAlreadyExistsError>
