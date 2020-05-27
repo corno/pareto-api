@@ -18,14 +18,18 @@ export type StreamLimiter = null | {
 /**
  * the return type indicates if the stream should be aborted. If a promise is returned, the stream will suppress further onData calls until the promise is resolved
  */
-export type OnData<Data, ReturnType> = (data: Data) => DataOrPromise<ReturnType>
+export type OnData<Data, DataReturnType> = (data: Data) => DataOrPromise<DataReturnType>
 
-export type StreamProcessor<Data, ReturnType, EndData> = (limiter: StreamLimiter, onData: OnData<Data, ReturnType>, onEnd: (aborted: boolean, endData: EndData) => void) => void
+export type StreamProcessor<Data, DataReturnType, EndData, ReturnType> = (
+    limiter: StreamLimiter,
+    onData: OnData<Data, DataReturnType>,
+    onEnd: (aborted: boolean, endData: EndData) => ReturnType
+) => ReturnType
 
 /**
  * a minimalistic interface that supports streaming
  */
-export interface IStream<Data, ReturnType, EndData> {
+export interface IStream<Data, DataReturnType, EndData, ReturnType> {
     /**
      * @param limiter the limiter is a hint to the stream provider to limit the amount of times onData is called.
      * @param onData callback for a data element
@@ -36,9 +40,9 @@ export interface IStream<Data, ReturnType, EndData> {
      */
     processStream(
         limiter: StreamLimiter,
-        onData: OnData<Data, ReturnType>,
-        onEnd: (aborted: boolean, data: EndData) => void
-    ): void
+        onData: OnData<Data, DataReturnType>,
+        onEnd: (aborted: boolean, data: EndData) => ReturnType
+    ): ReturnType
 }
 
 /**
@@ -50,10 +54,10 @@ export type KeyValuePair<Type> = {
 }
 
 
-export type KeyValueStreamProcessor<Data, ReturnType, EndData> = StreamProcessor<KeyValuePair<Data>, ReturnType, EndData>
+export type KeyValueStreamProcessor<Data, DataReturnType, EndData, ReturnType> = StreamProcessor<KeyValuePair<Data>, DataReturnType, EndData, ReturnType>
 
 
 /**
  * a stream for key value pairs
  */
-export interface IKeyValueStream<Data, ReturnType, EndData> extends IStream<KeyValuePair<Data>, ReturnType, EndData> { }
+export interface IKeyValueStream<Data, DataReturnType, EndData, ReturnType> extends IStream<KeyValuePair<Data>, DataReturnType, EndData, ReturnType> { }
