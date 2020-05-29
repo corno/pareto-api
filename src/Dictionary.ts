@@ -5,9 +5,9 @@ import {
     UnsafeEntryDoesNotExistError,
 } from "./Lookup"
 import {
-    DataOrPromise,
-    UnsafeDataOrPromise,
-} from "./Promise"
+    IValue,
+    IUnsafeValue,
+} from "./Value"
 import {
     IStream,
 } from "./Stream"
@@ -36,19 +36,17 @@ export type UnsafeTwoWayError<ErrorType> =
  * The provider can choose to implement only a subset of the functions, therefor all methods have a 'null' alternative
  */
 export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
-    readonly getKeys: null | (<ReturnType>() => UnsafeDataOrPromise<IStream<
+    readonly getKeys: null | (() => IUnsafeValue<IStream<
         string, //the key
-        boolean, //abort flag
-        null,
-        ReturnType
+        null
     >, CustomErrorType>)
 
-    readonly getEntry: null | ((dbName: string) => UnsafeDataOrPromise<OpenData, UnsafeEntryDoesNotExistError<CustomErrorType>>)
+    readonly getEntry: null | ((dbName: string) => IUnsafeValue<OpenData, UnsafeEntryDoesNotExistError<CustomErrorType>>)
 
-    readonly createEntry: null | ((dbName: string, data: CreateData) => UnsafeDataOrPromise<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>)
-    readonly deleteEntry: null | ((dbName: string) => UnsafeDataOrPromise<null, UnsafeEntryDoesNotExistError<CustomErrorType>>)
-    readonly renameEntry: null | ((oldName: string, newName: string) => UnsafeDataOrPromise<null, UnsafeTwoWayError<CustomErrorType>>)
-    readonly copyEntry: null | ((oldName: string, newName: string) => UnsafeDataOrPromise<null, UnsafeTwoWayError<CustomErrorType>>)
+    readonly createEntry: null | ((dbName: string, data: CreateData) => IUnsafeValue<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>)
+    readonly deleteEntry: null | ((dbName: string) => IUnsafeValue<null, UnsafeEntryDoesNotExistError<CustomErrorType>>)
+    readonly renameEntry: null | ((oldName: string, newName: string) => IUnsafeValue<null, UnsafeTwoWayError<CustomErrorType>>)
+    readonly copyEntry: null | ((oldName: string, newName: string) => IUnsafeValue<null, UnsafeTwoWayError<CustomErrorType>>)
 }
 
 /**
@@ -56,17 +54,15 @@ export interface IUnsafeLooseDictionary<CreateData, OpenData, CustomErrorType> {
  * the provider must implement all of the functions
  */
 export interface IUnsafeStrictDictionary<CreateData, OpenData, CustomErrorType> extends IUnsafeLookup<OpenData, CustomErrorType> {
-    readonly getKeys: <ReturnType> () => UnsafeDataOrPromise<IStream<
+    readonly getKeys: () => IUnsafeValue<IStream<
         string, //the key
-        boolean, //abort flag
-        null,
-        ReturnType
+        null
     >, CustomErrorType>
 
-    readonly createEntry: (dbName: string, data: CreateData) => UnsafeDataOrPromise<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>
-    readonly deleteEntry: (dbName: string) => UnsafeDataOrPromise<null, UnsafeEntryDoesNotExistError<CustomErrorType>>
-    readonly renameEntry: (oldName: string, newName: string) => UnsafeDataOrPromise<null, UnsafeTwoWayError<CustomErrorType>>
-    readonly copyEntry: (oldName: string, newName: string) => UnsafeDataOrPromise<null, UnsafeTwoWayError<CustomErrorType>>
+    readonly createEntry: (dbName: string, data: CreateData) => IUnsafeValue<null, UnsafeEntryAlreadyExistsError<CustomErrorType>>
+    readonly deleteEntry: (dbName: string) => IUnsafeValue<null, UnsafeEntryDoesNotExistError<CustomErrorType>>
+    readonly renameEntry: (oldName: string, newName: string) => IUnsafeValue<null, UnsafeTwoWayError<CustomErrorType>>
+    readonly copyEntry: (oldName: string, newName: string) => IUnsafeValue<null, UnsafeTwoWayError<CustomErrorType>>
 }
 
 //Safe
@@ -80,19 +76,17 @@ export type SafeTwoWayError = TwoWayError
  * the provider can choose to implement only a subset of the functions, therefor all functions have a 'null' alternative
  */
 export interface ISafeLooseDictionary<CreateData, OpenData> {
-    readonly getKeys: null | (<ReturnType>() => DataOrPromise<IStream<
+    readonly getKeys: null | (() => IValue<IStream<
         string, //the key
-        boolean, //abort signal return value
-        null, // no end data
-        ReturnType
+        null // no end data
     >>)
 
-    readonly getEntry: null | ((dbName: string) => UnsafeDataOrPromise<OpenData, SafeEntryDoesNotExistError>)
+    readonly getEntry: null | ((dbName: string) => IUnsafeValue<OpenData, SafeEntryDoesNotExistError>)
 
-    readonly createEntry: null | ((dbName: string, data: CreateData) => UnsafeDataOrPromise<null, SafeEntryAlreadyExistsError>)
-    readonly deleteEntry: null | ((dbName: string) => UnsafeDataOrPromise<null, SafeEntryDoesNotExistError>)
-    readonly renameEntry: null | ((oldName: string, newName: string) => UnsafeDataOrPromise<null, SafeTwoWayError>)
-    readonly copyEntry: null | ((oldName: string, newName: string) => UnsafeDataOrPromise<null, SafeTwoWayError>)
+    readonly createEntry: null | ((dbName: string, data: CreateData) => IUnsafeValue<null, SafeEntryAlreadyExistsError>)
+    readonly deleteEntry: null | ((dbName: string) => IUnsafeValue<null, SafeEntryDoesNotExistError>)
+    readonly renameEntry: null | ((oldName: string, newName: string) => IUnsafeValue<null, SafeTwoWayError>)
+    readonly copyEntry: null | ((oldName: string, newName: string) => IUnsafeValue<null, SafeTwoWayError>)
 }
 
 /**
@@ -100,16 +94,14 @@ export interface ISafeLooseDictionary<CreateData, OpenData> {
  * the provider must implement all of the functions
  */
 export interface ISafeStrictDictionary<CreateData, OpenData> extends ISafeLookup<OpenData> {
-    readonly getKeys: <ReturnType>() => DataOrPromise<IStream<
+    readonly getKeys: () => IValue<IStream<
         string, //the key
-        boolean, //abort signal return value
-        null,
-        ReturnType
+        null
     >>
 
-    readonly createEntry: (dbName: string, data: CreateData) => UnsafeDataOrPromise<null, SafeEntryAlreadyExistsError>
-    readonly deleteEntry: (dbName: string) => UnsafeDataOrPromise<null, SafeEntryDoesNotExistError>
-    readonly renameEntry: (oldName: string, newName: string) => UnsafeDataOrPromise<null, SafeTwoWayError>
-    readonly copyEntry: (oldName: string, newName: string) => UnsafeDataOrPromise<null, SafeTwoWayError>
+    readonly createEntry: (dbName: string, data: CreateData) => IUnsafeValue<null, SafeEntryAlreadyExistsError>
+    readonly deleteEntry: (dbName: string) => IUnsafeValue<null, SafeEntryDoesNotExistError>
+    readonly renameEntry: (oldName: string, newName: string) => IUnsafeValue<null, SafeTwoWayError>
+    readonly copyEntry: (oldName: string, newName: string) => IUnsafeValue<null, SafeTwoWayError>
 }
 

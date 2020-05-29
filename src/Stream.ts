@@ -2,7 +2,7 @@
     "@typescript-eslint/no-empty-interface": off
 */
 
-import { DataOrPromise } from "./Promise"
+import { IValue } from "./Value"
 
 export type StreamLimiter = null | {
     /**
@@ -18,18 +18,17 @@ export type StreamLimiter = null | {
 /**
  * the return type indicates if the stream should be aborted. If a promise is returned, the stream will suppress further onData calls until the promise is resolved
  */
-export type OnData<Data, DataReturnType> = (data: Data) => DataOrPromise<DataReturnType>
 
-export type StreamProcessor<Data, DataReturnType, EndData, ReturnType> = (
+export type HandleStreamFunction<Data, EndData> = (
     limiter: StreamLimiter,
-    onData: OnData<Data, DataReturnType>,
-    onEnd: (aborted: boolean, endData: EndData) => ReturnType
-) => ReturnType
+    onData: (data: Data) => IValue<boolean>, //
+    onEnd: (aborted: boolean, endData: EndData) => void
+) => void
 
 /**
  * a minimalistic interface that supports streaming
  */
-export interface IStream<Data, DataReturnType, EndData, ReturnType> {
+export interface IStream<Data, EndData> {
     /**
      * @param limiter the limiter is a hint to the stream provider to limit the amount of times onData is called.
      * @param onData callback for a data element
@@ -38,11 +37,11 @@ export interface IStream<Data, DataReturnType, EndData, ReturnType> {
      * @param onEnd callback that will be called when the stream is finished. aborted will be set to true if not the full dataset is received. This will always be caused by the caller
      * either by setting the limiter or by calling the abort function on onData
      */
-    processStream(
+    handle(
         limiter: StreamLimiter,
-        onData: OnData<Data, DataReturnType>,
-        onEnd: (aborted: boolean, data: EndData) => ReturnType
-    ): ReturnType
+        onData: (data: Data) => IValue<boolean>,
+        onEnd: (aborted: boolean, data: EndData) => void
+    ): void
 }
 
 /**
@@ -54,10 +53,10 @@ export type KeyValuePair<Type> = {
 }
 
 
-export type KeyValueStreamProcessor<Data, DataReturnType, EndData, ReturnType> = StreamProcessor<KeyValuePair<Data>, DataReturnType, EndData, ReturnType>
+export type ProcessKeyValueStreamFunction<Data, EndData> = HandleStreamFunction<KeyValuePair<Data>, EndData>
 
 
 /**
  * a stream for key value pairs
  */
-export interface IKeyValueStream<Data, DataReturnType, EndData, ReturnType> extends IStream<KeyValuePair<Data>, DataReturnType, EndData, ReturnType> { }
+export interface IKeyValueStream<Data, EndData> extends IStream<KeyValuePair<Data>, EndData> { }
