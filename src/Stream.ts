@@ -15,14 +15,18 @@ export type StreamLimiter = null | {
     abortEarly: boolean
 }
 
+export interface StreamConsumer<Data, EndData> {
+    onData: (data: Data) => IValue<boolean>
+    onEnd: (aborted: boolean, endData: EndData) => void
+}
+
 /**
  * the return type indicates if the stream should be aborted. If a promise is returned, the stream will suppress further onData calls until the promise is resolved
  */
 
 export type HandleStreamFunction<Data, EndData> = (
     limiter: StreamLimiter,
-    onData: (data: Data) => IValue<boolean>, //
-    onEnd: (aborted: boolean, endData: EndData) => void
+    consumer: StreamConsumer<Data, EndData>
 ) => void
 
 /**
@@ -39,8 +43,7 @@ export interface IStream<Data, EndData> {
      */
     handle(
         limiter: StreamLimiter,
-        onData: (data: Data) => IValue<boolean>,
-        onEnd: (aborted: boolean, data: EndData) => void
+        consumer: StreamConsumer<Data, EndData>,
     ): void
 }
 
