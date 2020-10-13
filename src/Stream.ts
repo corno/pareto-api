@@ -56,7 +56,7 @@ export type KeyValuePair<Type> = {
 }
 
 
-export type ProcessKeyValueStreamFunction<Data, EndData> = HandleStreamFunction<KeyValuePair<Data>, EndData>
+export type HandleKeyValueStreamFunction<Data, EndData> = HandleStreamFunction<KeyValuePair<Data>, EndData>
 
 
 /**
