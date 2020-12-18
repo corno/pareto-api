@@ -1,6 +1,6 @@
 {
   "name": "pareto-api",
-  "version": "10.0.1",
+  "version": "10.0.2",
   "description": "the API interface definitions for the pareto package",
   "main": "dist/index.js",
   "scripts": {
