@@ -15,8 +15,20 @@ export type StreamLimiter = null | {
     abortEarly: boolean
 }
 
-export interface StreamConsumer<Data, EndData> {
+/**
+ * a IStreamConsumer is needed as an argument to the IStream.handle() method.
+ */
+export interface IStreamConsumer<Data, EndData> {
+    /**
+     * onData is called when the stream has the next piece of Data available.
+     * The consumer should return an IValue<boolean>. the boolean indicates if the stream should be aborted or not, so the default return value should be 'false'
+     * The boolean is wrapped in an IValue to allow the consumer to do an asynchronous action based on the data received;
+     * The next onData call or the onEnd call will not be done before the IValue's promise is resolved
+     */
     onData: (data: Data) => IValue<boolean>
+    /**
+     * The onEnd is called when there is no data left.
+     */
     onEnd: (aborted: boolean, endData: EndData) => void
 }
 
@@ -26,7 +38,7 @@ export interface StreamConsumer<Data, EndData> {
 
 export type HandleStreamFunction<Data, EndData> = (
     limiter: StreamLimiter,
-    consumer: StreamConsumer<Data, EndData>
+    consumer: IStreamConsumer<Data, EndData>
 ) => void
 
 /**
@@ -43,7 +55,7 @@ export interface IStream<Data, EndData> {
      */
     handle(
         limiter: StreamLimiter,
-        consumer: StreamConsumer<Data, EndData>,
+        consumer: IStreamConsumer<Data, EndData>,
     ): void
 }
 
